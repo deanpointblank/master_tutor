@@ -9,8 +9,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     DEFAULT_LLM_PROVIDER: Optional[str] = None
-    DEFAULT_LLM_MODEL: Optional[int] = None
-    DEFAULT_TEMPERATURE: Optional[str] = None
+    DEFAULT_LLM_MODEL: Optional[str] = None
+    DEFAULT_TEMPERATURE: Optional[float] = None
 
     OPENAI_API_KEY: Optional[str] = None
     ANTHROPIC_API_KEY: Optional[str] = None

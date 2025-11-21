@@ -1,6 +1,7 @@
 from typing import Optional
 
 from langchain_core.language_models import BaseChatModel
+from pydantic import SecretStr
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 from app.config import settings
@@ -25,5 +26,5 @@ class OpenAIProvider(BaseLLMProvider):
         return ChatOpenAI(
             model=self.model,
             temperature=self.temperature,
-            api_key=settings.OPENAI_API_KEY,
+            api_key=SecretStr(settings.OPENAI_API_KEY),
         )

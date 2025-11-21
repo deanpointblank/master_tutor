@@ -30,12 +30,19 @@ class LLMProviderFactory:
         provider_class = cls.PROVIDERS[provider_enum]
 
         resolved_model = model or cls.DEFAULT_MODELS[provider_enum].value
-        resolved_temperature = temperature or settings.DEFAULT_TEMPERATURE
+        resolved_temperature = temperature if temperature is not None else (
+            settings.DEFAULT_TEMPERATURE if settings.DEFAULT_TEMPERATURE is not None else 0.7
+        )
 
         return provider_class(model=resolved_model, temperature=resolved_temperature)
 
     @classmethod
     def get_default_provider(cls) -> BaseLLMProvider:
+        if not settings.DEFAULT_LLM_PROVIDER:
+            raise ValueError(
+                "DEFAULT_LLM_PROVIDER must be set in environment or .env file"
+            )
+
         return cls.create_provider(
             provider=settings.DEFAULT_LLM_PROVIDER,
             model=settings.DEFAULT_LLM_MODEL,

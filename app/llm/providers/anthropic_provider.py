@@ -1,6 +1,7 @@
 from typing import Optional
 
 from langchain_core.language_models import BaseChatModel
+from pydantic import SecretStr
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 from app.config import settings
@@ -23,8 +24,9 @@ class AnthropicProvider(BaseLLMProvider):
         from langchain_anthropic import ChatAnthropic
 
         return ChatAnthropic(
-            model=self.model,
+            model_name=self.model,
             temperature=self.temperature,
-            api_key=settings.ANTHROPIC_API_KEY,
-            max_tokens=4096,
+            api_key=SecretStr(settings.ANTHROPIC_API_KEY),
+            timeout=None,
+            stop=None,
         )
